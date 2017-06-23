@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace MDReplacer
@@ -18,12 +12,115 @@ namespace MDReplacer
 
         private MouseKeyShortcutTriggerer triggerer = new MouseKeyShortcutTriggerer();
         private int shortcutKey = (int) Keys.LShiftKey;
+        private Properties.Settings defaultSettings = Properties.Settings.Default;
 
         public MainForm()
         {
             InitializeComponent();
+            LoadSettings();
         }
 
+        #region AppSettings
+        private void LoadSettings()
+        {
+            HideFromTrayCheckBox.Checked = defaultSettings.HideFromTray;
+            ignoreLoadWithWindowsCheckboxChange = true;
+            LoadWithWindowsCheckBox.Checked = IsLoadingWithWindows();
+            ignoreLoadWithWindowsCheckboxChange = false;
+        }
+
+        private void HideFromTrayCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            defaultSettings.HideFromTray = HideFromTrayCheckBox.Checked;
+            defaultSettings.Save();
+
+            if (HideFromTrayCheckBox.Checked)
+            {
+                if (MessageBox.Show("Are you sure you want to hide the application from the tray? If so - if you want to close this app manually using the Task Manager", 
+                    "Are you sure?", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    HideFromTrayCheckBox.Checked = false;
+                }
+            }
+        }
+
+        private bool ignoreLoadWithWindowsCheckboxChange = false;
+
+        private void LoadWithWindowsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreLoadWithWindowsCheckboxChange) return;
+
+            // If we don't have admin permissions, we are not allowed to touch the registry
+            if (!UAC.IsAdministrator())
+            {
+                if (MessageBox.Show("To allow the application to load with Windows you must allow it to run as administartor, click OK to continue",
+                "Run as administrator", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                {
+                    ignoreLoadWithWindowsCheckboxChange = true;
+                    LoadWithWindowsCheckBox.Checked = !LoadWithWindowsCheckBox.Checked;
+                    ignoreLoadWithWindowsCheckboxChange = false;
+                    return;
+                }
+
+                UAC.RunAsAdministrator();
+                return;
+            }
+
+            var runKey = GetRunRegistryKey(true);
+
+            // Add the application to load with windows
+            if (LoadWithWindowsCheckBox.Checked)
+                runKey.SetValue("MDReplacer", String.Format("\"{0}\" --hide", Application.ExecutablePath));
+            else
+                runKey.DeleteValue("MDReplacer");
+        }
+
+        private RegistryKey GetRunRegistryKey(bool writeable)
+        {
+            return Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writeable);
+        }
+
+        private bool IsLoadingWithWindows()
+        {
+            var key = GetRunRegistryKey(false);
+            var exists = key.GetValue("MDReplacer") != null;
+            key.Close();
+            return exists;
+        }
+        #endregion
+
+        #region NotifyIcon
+        private void ShowNotifyIcon()
+        {
+            notifyIcon.Visible = true;
+        }
+
+        /// <summary>
+        /// Show up the application when clicking on the notify icon in the taskbar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+        }
+
+        private void exitMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void openMenuItem_Click(object sender, EventArgs e)
+        {
+            Show();
+        }
+        #endregion
+
+        #region Window Methods
+        /// <summary>
+        /// Register all triggers and hide window if requested in command line.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -36,28 +133,29 @@ namespace MDReplacer
                 if (command == "--hide") Hide();
         }
 
-        private void Hide(bool showInTaskbar = false)
+        /// <summary>
+        /// Hide the window and show it in the taskbar or not according to the configurations.
+        /// </summary>
+        /// <param name="showInTaskbar"></param>
+        private new void Hide()
         {
             BeginInvoke(new MethodInvoker(() =>
             {
                 Visible = false;
 
-                if (showInTaskbar)
+                if (!defaultSettings.HideFromTray)
                     ShowNotifyIcon();
             }));
         }
-        
-        private void ShowNotifyIcon()
-        {
-            notifyIcon.Visible = true;
-        }
 
-        private void Triggerer_OnTrigger(int triggerId)
+        /// <summary>
+        /// Shows the window and hides the tray icon.
+        /// </summary>
+        private new void Show()
         {
-            if (triggerId == TRIGGER_DESKTOP_LEFT)
-                DeskReplaceUtil.LeftDesktop();
-            else if (triggerId == TRIGGER_DESKTOP_RIGHT)
-                DeskReplaceUtil.RightDesktop();
+            base.Show();
+            WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
         }
 
         /// <summary>
@@ -69,7 +167,7 @@ namespace MDReplacer
             base.OnResize(e);
 
             if (WindowState == FormWindowState.Minimized)
-                Hide(true);
+                Hide();
         }
 
         protected override void OnClosed(EventArgs e)
@@ -78,6 +176,17 @@ namespace MDReplacer
             triggerer.Uninstall();
             notifyIcon.Visible = false;
         }
+        #endregion
+
+        #region Detect Triggers And Move Desktops
+        private void Triggerer_OnTrigger(int triggerId)
+        {
+            if (triggerId == TRIGGER_DESKTOP_LEFT)
+                DeskReplaceUtil.LeftDesktop();
+            else if (triggerId == TRIGGER_DESKTOP_RIGHT)
+                DeskReplaceUtil.RightDesktop();
+        }
+
 
         /// <summary>
         /// Register all of the triggers so we will know then use is trying to move between desktops.
@@ -94,14 +203,13 @@ namespace MDReplacer
                 new int[] { shortcutKey }, null,
                 (int)InputManager.MouseHook.MouseWheelEvents.ScrollUp));
         }
+        #endregion
 
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Show();
-            WindowState = FormWindowState.Normal;
-            notifyIcon.Visible = false;
-        }
-
+        /// <summary>
+        /// Open up links clicked on.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start(((LinkLabel)sender).Tag.ToString());

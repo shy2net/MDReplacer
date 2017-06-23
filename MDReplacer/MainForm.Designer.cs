@@ -40,8 +40,13 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.notifyContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.notifyContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -72,6 +77,7 @@
             this.HideFromTrayCheckBox.TabIndex = 6;
             this.HideFromTrayCheckBox.Text = "Hide from tray";
             this.HideFromTrayCheckBox.UseVisualStyleBackColor = true;
+            this.HideFromTrayCheckBox.CheckedChanged += new System.EventHandler(this.HideFromTrayCheckBox_CheckedChanged);
             // 
             // LoadWithWindowsCheckBox
             // 
@@ -82,9 +88,11 @@
             this.LoadWithWindowsCheckBox.TabIndex = 5;
             this.LoadWithWindowsCheckBox.Text = "Load with Windows";
             this.LoadWithWindowsCheckBox.UseVisualStyleBackColor = true;
+            this.LoadWithWindowsCheckBox.CheckedChanged += new System.EventHandler(this.LoadWithWindowsCheckBox_CheckedChanged);
             // 
             // notifyIcon
             // 
+            this.notifyIcon.ContextMenuStrip = this.notifyContextMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "MDReplacer";
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
@@ -127,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(59, 35);
+            this.label3.Location = new System.Drawing.Point(38, 35);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(101, 13);
             this.label3.TabIndex = 8;
@@ -136,11 +144,39 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(59, 53);
+            this.label2.Location = new System.Drawing.Point(38, 53);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(147, 13);
+            this.label2.Size = new System.Drawing.Size(189, 13);
             this.label2.TabIndex = 7;
-            this.label2.Text = "SHIFT + WHEEL UP\\DOWN";
+            this.label2.Text = "SHIFT + MOUSE WHEEL UP\\DOWN";
+            // 
+            // notifyContextMenuStrip
+            // 
+            this.notifyContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openMenuItem,
+            this.toolStripSeparator1,
+            this.exitMenuItem});
+            this.notifyContextMenuStrip.Name = "notifyContextMenuStrip";
+            this.notifyContextMenuStrip.Size = new System.Drawing.Size(104, 54);
+            // 
+            // openMenuItem
+            // 
+            this.openMenuItem.Name = "openMenuItem";
+            this.openMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openMenuItem.Text = "Open";
+            this.openMenuItem.Click += new System.EventHandler(this.openMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(100, 6);
+            // 
+            // exitMenuItem
+            // 
+            this.exitMenuItem.Name = "exitMenuItem";
+            this.exitMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitMenuItem.Text = "Exit";
+            this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
             // MainForm
             // 
@@ -161,6 +197,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.notifyContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -178,6 +215,10 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ContextMenuStrip notifyContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem openMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
     }
 }
 

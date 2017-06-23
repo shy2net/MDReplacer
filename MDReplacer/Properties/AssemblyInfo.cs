@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MDReplacer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A simple utility to move between desktops easily in Windows 10.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Nemex Studios")]
 [assembly: AssemblyProduct("MDReplacer")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Nemex Studios 2017 ©")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
