@@ -35,18 +35,20 @@
             this.HideFromTrayCheckBox = new System.Windows.Forms.CheckBox();
             this.LoadWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notifyContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkNemexStudios = new System.Windows.Forms.LinkLabel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.notifyContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.notifyContextMenuStrip.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -63,7 +65,7 @@
             this.groupBox1.Controls.Add(this.LoadWithWindowsCheckBox);
             this.groupBox1.Location = new System.Drawing.Point(15, 160);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(267, 83);
+            this.groupBox1.Size = new System.Drawing.Size(283, 83);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configurations";
@@ -97,59 +99,6 @@
             this.notifyIcon.Text = "MDReplacer";
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(30, 276);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(228, 13);
-            this.linkLabel1.TabIndex = 3;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Tag = "http://www.wallpaperfx.com";
-            this.linkLabel1.Text = "(Icons credits to - http://www.wallpaperfx.com)";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
-            // 
-            // linkNemexStudios
-            // 
-            this.linkNemexStudios.AutoSize = true;
-            this.linkNemexStudios.Location = new System.Drawing.Point(38, 256);
-            this.linkNemexStudios.Name = "linkNemexStudios";
-            this.linkNemexStudios.Size = new System.Drawing.Size(210, 13);
-            this.linkNemexStudios.TabIndex = 4;
-            this.linkNemexStudios.TabStop = true;
-            this.linkNemexStudios.Tag = "http://byshynet.com";
-            this.linkNemexStudios.Text = "http://www.byshynet.com - Nemex Studios";
-            this.linkNemexStudios.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(15, 55);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(262, 97);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Info";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 35);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Use combination of:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 53);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(189, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "SHIFT + MOUSE WHEEL UP\\DOWN";
-            // 
             // notifyContextMenuStrip
             // 
             this.notifyContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -178,11 +127,75 @@
             this.exitMenuItem.Text = "Exit";
             this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(38, 276);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(228, 13);
+            this.linkLabel1.TabIndex = 3;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Tag = "http://www.wallpaperfx.com";
+            this.linkLabel1.Text = "(Icons credits to - http://www.wallpaperfx.com)";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
+            // 
+            // linkNemexStudios
+            // 
+            this.linkNemexStudios.AutoSize = true;
+            this.linkNemexStudios.Location = new System.Drawing.Point(46, 256);
+            this.linkNemexStudios.Name = "linkNemexStudios";
+            this.linkNemexStudios.Size = new System.Drawing.Size(210, 13);
+            this.linkNemexStudios.TabIndex = 4;
+            this.linkNemexStudios.TabStop = true;
+            this.linkNemexStudios.Tag = "http://byshynet.com";
+            this.linkNemexStudios.Text = "http://www.byshynet.com - Nemex Studios";
+            this.linkNemexStudios.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.pictureBox1);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Location = new System.Drawing.Point(15, 53);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(283, 99);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Info";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(89, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Use combination of:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(89, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(189, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "SHIFT + MOUSE WHEEL UP\\DOWN";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::MDReplacer.Properties.Resources.Bluefx_Desktop_Monitor_Thumb;
+            this.pictureBox1.Location = new System.Drawing.Point(13, 19);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(68, 68);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 303);
+            this.ClientSize = new System.Drawing.Size(310, 303);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.linkNemexStudios);
             this.Controls.Add(this.linkLabel1);
@@ -195,9 +208,10 @@
             this.Text = "MDReplacer";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.notifyContextMenuStrip.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.notifyContextMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,6 +233,7 @@
         private System.Windows.Forms.ToolStripMenuItem openMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

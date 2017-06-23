@@ -74,6 +74,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -87,6 +88,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bluefx-Desktop-Monitor.png" />
+    <None Include="Bluefx-Desktop-Monitor-Thumb.png" />
     <Content Include="Wallpaperfx-3d-Bluefx-Desktop-Monitor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
