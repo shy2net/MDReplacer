@@ -21,6 +21,9 @@ namespace MDReplacer
         }
 
         #region AppSettings
+        /// <summary>
+        /// Loads the application settings stored.
+        /// </summary>
         private void LoadSettings()
         {
             HideFromTrayCheckBox.Checked = defaultSettings.HideFromTray;
@@ -31,6 +34,9 @@ namespace MDReplacer
 
         private void HideFromTrayCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            // If the application was not loaded yet, don't prompt the dialog box
+            if (!Visible) return;
+
             defaultSettings.HideFromTray = HideFromTrayCheckBox.Checked;
             defaultSettings.Save();
 
@@ -48,6 +54,10 @@ namespace MDReplacer
 
         private void LoadWithWindowsCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            // If the application was not loaded yet, don't prompt the dialog box
+            if (!Visible) return;
+
+            // Sometimes we change the settings using code, and we don't want to prompt anything
             if (ignoreLoadWithWindowsCheckboxChange) return;
 
             // If we don't have admin permissions, we are not allowed to touch the registry
