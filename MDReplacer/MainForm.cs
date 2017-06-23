@@ -30,6 +30,26 @@ namespace MDReplacer
             triggerer.OnTrigger += Triggerer_OnTrigger;
             triggerer.Install();
             RegisterTriggers();
+
+            // Hide the window if specified (used for startup)
+            foreach (var command in Environment.GetCommandLineArgs())
+                if (command == "--hide") Hide();
+        }
+
+        private void Hide(bool showInTaskbar = false)
+        {
+            BeginInvoke(new MethodInvoker(() =>
+            {
+                Visible = false;
+
+                if (showInTaskbar)
+                    ShowNotifyIcon();
+            }));
+        }
+        
+        private void ShowNotifyIcon()
+        {
+            notifyIcon.Visible = true;
         }
 
         private void Triggerer_OnTrigger(int triggerId)
@@ -40,12 +60,28 @@ namespace MDReplacer
                 DeskReplaceUtil.RightDesktop();
         }
 
+        /// <summary>
+        /// When resizing the window we want to hide the application (either in the tray or away from the user)
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if (WindowState == FormWindowState.Minimized)
+                Hide(true);
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
             triggerer.Uninstall();
+            notifyIcon.Visible = false;
         }
 
+        /// <summary>
+        /// Register all of the triggers so we will know then use is trying to move between desktops.
+        /// </summary>
         private void RegisterTriggers()
         {
             triggerer.RegisterTrigger(
@@ -57,6 +93,18 @@ namespace MDReplacer
                 new MouseKeyShortcutTriggerer.MouseKeyShortcutTrigger(TRIGGER_DESKTOP_RIGHT,
                 new int[] { shortcutKey }, null,
                 (int)InputManager.MouseHook.MouseWheelEvents.ScrollUp));
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+            notifyIcon.Visible = false;
+        }
+
+        private void LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(((LinkLabel)sender).Tag.ToString());
         }
     }
 }

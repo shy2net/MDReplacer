@@ -29,12 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.HideInTrayCheckBox = new System.Windows.Forms.CheckBox();
+            this.HideFromTrayCheckBox = new System.Windows.Forms.CheckBox();
             this.LoadWithWindowsCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkNemexStudios = new System.Windows.Forms.LinkLabel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -43,29 +50,28 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(270, 49);
             this.label1.TabIndex = 0;
-            this.label1.Text = "This utility allows you to move between windows 10 desktops easily using your mou" +
-    "se wheel and a shortcut key assigned.";
+            this.label1.Text = "This utility allows you to move between windows 10 desktops easily.";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.HideInTrayCheckBox);
+            this.groupBox1.Controls.Add(this.HideFromTrayCheckBox);
             this.groupBox1.Controls.Add(this.LoadWithWindowsCheckBox);
-            this.groupBox1.Location = new System.Drawing.Point(15, 106);
+            this.groupBox1.Location = new System.Drawing.Point(15, 160);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(259, 83);
+            this.groupBox1.Size = new System.Drawing.Size(267, 83);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Configurations";
             // 
-            // HideInTrayCheckBox
+            // HideFromTrayCheckBox
             // 
-            this.HideInTrayCheckBox.AutoSize = true;
-            this.HideInTrayCheckBox.Location = new System.Drawing.Point(6, 51);
-            this.HideInTrayCheckBox.Name = "HideInTrayCheckBox";
-            this.HideInTrayCheckBox.Size = new System.Drawing.Size(79, 17);
-            this.HideInTrayCheckBox.TabIndex = 6;
-            this.HideInTrayCheckBox.Text = "Hide in tray";
-            this.HideInTrayCheckBox.UseVisualStyleBackColor = true;
+            this.HideFromTrayCheckBox.AutoSize = true;
+            this.HideFromTrayCheckBox.Location = new System.Drawing.Point(6, 51);
+            this.HideFromTrayCheckBox.Name = "HideFromTrayCheckBox";
+            this.HideFromTrayCheckBox.Size = new System.Drawing.Size(91, 17);
+            this.HideFromTrayCheckBox.TabIndex = 6;
+            this.HideFromTrayCheckBox.Text = "Hide from tray";
+            this.HideFromTrayCheckBox.UseVisualStyleBackColor = true;
             // 
             // LoadWithWindowsCheckBox
             // 
@@ -79,25 +85,84 @@
             // 
             // notifyIcon
             // 
-            this.notifyIcon.Text = "notifyIcon1";
-            this.notifyIcon.Visible = true;
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "MDReplacer";
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(30, 276);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(228, 13);
+            this.linkLabel1.TabIndex = 3;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Tag = "http://www.wallpaperfx.com";
+            this.linkLabel1.Text = "(Icons credits to - http://www.wallpaperfx.com)";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
+            // 
+            // linkNemexStudios
+            // 
+            this.linkNemexStudios.AutoSize = true;
+            this.linkNemexStudios.Location = new System.Drawing.Point(38, 256);
+            this.linkNemexStudios.Name = "linkNemexStudios";
+            this.linkNemexStudios.Size = new System.Drawing.Size(210, 13);
+            this.linkNemexStudios.TabIndex = 4;
+            this.linkNemexStudios.TabStop = true;
+            this.linkNemexStudios.Tag = "http://byshynet.com";
+            this.linkNemexStudios.Text = "http://www.byshynet.com - Nemex Studios";
+            this.linkNemexStudios.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkClicked);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Location = new System.Drawing.Point(15, 55);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(262, 97);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Info";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(59, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Use combination of:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(59, 53);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(147, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "SHIFT + WHEEL UP\\DOWN";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 201);
+            this.ClientSize = new System.Drawing.Size(289, 303);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.linkNemexStudios);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MDReplacer - Replace desktops using your mouse";
+            this.Text = "MDReplacer";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -105,9 +170,14 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox HideInTrayCheckBox;
+        private System.Windows.Forms.CheckBox HideFromTrayCheckBox;
         private System.Windows.Forms.CheckBox LoadWithWindowsCheckBox;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel linkNemexStudios;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
     }
 }
 
