@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using WinputManager;
 
 namespace MDReplacer
 {
@@ -15,14 +16,15 @@ namespace MDReplacer
         private List<MouseKeyShortcutTrigger> triggers = new List<MouseKeyShortcutTrigger>();
         private List<int> keysHeld = new List<int>();
         private List<int> mouseKeysHeld = new List<int>();
+        KeyboardHook keyboardHook = new KeyboardHook();
+        MouseHook mouseHook = new MouseHook();
 
         public MouseKeyShortcutTriggerer()
         {
             /* Start listening to all of the events */
-            InputManager.KeyboardHook.KeyDown += KeyboardHook_KeyDown;
-            InputManager.KeyboardHook.KeyUp += KeyboardHook_KeyUp;
-            InputManager.MouseHook.MouseEvent += MouseHook_MouseEvent;
-            InputManager.MouseHook.WheelEvent += MouseHook_WheelEvent;
+            keyboardHook.OnKeyboardEvent += KeyboardHook_OnKeyboardEvent;
+            mouseHook.OnMouseEvent += MouseHook_OnMouseEvent;
+            mouseHook.OnMouseWheelEvent += MouseHook_OnMouseWheelEvent;
         }
 
         /// <summary>
@@ -30,8 +32,8 @@ namespace MDReplacer
         /// </summary>
         public void Install()
         {
-            InputManager.MouseHook.InstallHook();
-            InputManager.KeyboardHook.InstallHook();
+            keyboardHook.Install();
+            mouseHook.Install();
         }
 
         /// <summary>
@@ -39,10 +41,55 @@ namespace MDReplacer
         /// </summary>
         public void Uninstall()
         {
-            InputManager.MouseHook.UninstallHook();
-            InputManager.KeyboardHook.UninstallHook();
+            keyboardHook.Uninstall();
+            mouseHook.Uninstall();
         }
 
+        #region Hook code
+        private bool MouseHook_OnMouseWheelEvent(int wheelValue)
+        {
+            return CheckForTriggers(wheelValue);
+        }
+
+        private bool MouseHook_OnMouseEvent(int mouseEvent)
+        {
+            // Key down events can't be divided by 2
+            if (mouseEvent % 2 > 0)
+            {
+                mouseKeysHeld.Add(mouseEvent);
+                return CheckForTriggers();
+            }
+            else
+            {
+                var keyUp = mouseEvent - 1; // Get the associated key up event by reducing one
+
+                // If this key exists in the held array, remove it
+                if (mouseKeysHeld.Contains((int)keyUp))
+                    mouseKeysHeld.Remove((int)keyUp);
+            }
+
+            return false;
+        }
+
+        private bool KeyboardHook_OnKeyboardEvent(uint key, BaseHook.KeyState keyState)
+        {
+            if (keyState == BaseHook.KeyState.Keydown)
+            {
+                // If this key does not exist, add it to the array of held keys
+                if (!keysHeld.Contains((int) key))
+                    keysHeld.Add((int) key);
+
+                return CheckForTriggers();
+
+            } // If this key was released
+            else if (keysHeld.Contains((int) key))
+                    keysHeld.Remove((int) key);
+
+            return false;
+
+        }
+        #endregion
+        #region Trigger Code
         /// <summary>
         /// Registers a trigger to be executed.
         /// </summary>
@@ -70,9 +117,9 @@ namespace MDReplacer
         }
 
         /// <summary>
-        /// Checks if any triggers should be occuring according to this shortcut.
+        /// Checks if any triggers should be occuring according to this shortcut, returns true if a trigger was activated.
         /// </summary>
-        private void CheckForTriggers(int wheelEvent = -1)
+        private bool CheckForTriggers(int wheelEvent = -1)
         {
             // Go through all of the triggers, and detect if any trigger should be triggered
             foreach (MouseKeyShortcutTrigger trigger in triggers) {
@@ -81,10 +128,15 @@ namespace MDReplacer
                     if (trigger.MouseKeys == null || IsTriggersDown(trigger.MouseKeys, mouseKeysHeld))
                     {
                         if (wheelEvent == trigger.WheelEvent)
+                        {
                             OnTrigger(trigger.TriggerId);
+                            return true;
+                        }
                     }
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -102,44 +154,6 @@ namespace MDReplacer
             return true;
         }
 
-        private void MouseHook_MouseEvent(InputManager.MouseHook.MouseEvents mEvent)
-        {
-            // Key down events are can't be divided by 2
-            if ((int)mEvent % 2 > 0)
-            {
-                mouseKeysHeld.Add((int) mEvent);
-                CheckForTriggers();
-            }
-            else
-            {
-                var keyUp = mEvent - 1; // Get the associated key up event by reducing one
-
-                // If this key exists in the held array, remove it
-                if (mouseKeysHeld.Contains((int) keyUp))
-                    mouseKeysHeld.Remove((int) keyUp);
-            }
-        }
-
-        private void MouseHook_WheelEvent(InputManager.MouseHook.MouseWheelEvents wEvent)
-        {
-            CheckForTriggers((int) wEvent);
-        }
-
-        private void KeyboardHook_KeyUp(int vkCode)
-        {
-            if (keysHeld.Contains(vkCode))
-                keysHeld.Remove(vkCode);
-        }
-
-        private void KeyboardHook_KeyDown(int vkCode)
-        {
-            if (!keysHeld.Contains(vkCode))
-                keysHeld.Add(vkCode);
-
-            CheckForTriggers();
-        }
-
-
         public struct MouseKeyShortcutTrigger
         {
             public int TriggerId;
@@ -147,12 +161,14 @@ namespace MDReplacer
             public int[] MouseKeys;
             public int WheelEvent;
 
-            public MouseKeyShortcutTrigger(int triggerId, int[] keys, int[] mouseKeys, int wheelEvent = -1) {
+            public MouseKeyShortcutTrigger(int triggerId, int[] keys, int[] mouseKeys, int wheelEvent = -1)
+            {
                 TriggerId = triggerId;
                 Keys = keys;
                 MouseKeys = mouseKeys;
                 WheelEvent = wheelEvent;
             }
         }
+        #endregion
     }
 }

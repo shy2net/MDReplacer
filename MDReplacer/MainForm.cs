@@ -197,7 +197,6 @@ namespace MDReplacer
                 DeskReplaceUtil.RightDesktop();
         }
 
-
         /// <summary>
         /// Register all of the triggers so we will know then use is trying to move between desktops.
         /// </summary>
