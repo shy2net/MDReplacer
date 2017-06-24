@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "MDReplacer"
-#define MyAppVersion "1.0"
+#define MyAppVersion "1.0.1.0"
 #define MyAppPublisher "Nemex Studios 2017"
 #define MyAppURL "http://www.byshynet.com"
 #define MyAppExeName "MDReplacer.exe"
@@ -45,6 +45,7 @@ Source: Office2007.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "D:\Backup\Git\MDReplacer\MDReplacer\bin\Debug\MDReplacer.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Backup\Git\MDReplacer\MDReplacer\bin\Debug\InputManager.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Backup\Git\MDReplacer\MDReplacer\bin\Debug\WinputManager.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 
